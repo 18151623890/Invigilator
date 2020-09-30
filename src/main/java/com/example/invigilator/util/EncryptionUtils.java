@@ -4,7 +4,9 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.digest.DigestUtils;
 
 /**
- * 加密工具
+ * @author zwz
+ * @date 2020/9/30 23:34
+ * @description 加密算法
  */
 public class EncryptionUtils {
 
