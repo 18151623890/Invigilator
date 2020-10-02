@@ -1,19 +1,14 @@
 package com.example.invigilator.entity;
 
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import java.util.Date;
 
-public class User {
+public class Role {
     //主键
-    private Integer userId;
-    //用户名
-    private String userName;
-    //密码
-    private String password;
-    //昵称
-    private String nickname;
+    private Integer roleId;
+    //角色名
+    private String roleName;
     //创建时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
@@ -26,37 +21,37 @@ public class User {
     private String updateName;
     //有效性（0.无效 1.有效）
     private Integer valid;
+    //备注
+    private String remark;
 
-    public Integer getUserId() {
-        return userId;
+    public Role() {
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public Role(Integer roleId, String roleName, Date createTime, String createName, Date updateTime, String updateName, Integer valid, String remark) {
+        this.roleId = roleId;
+        this.roleName = roleName;
+        this.createTime = createTime;
+        this.createName = createName;
+        this.updateTime = updateTime;
+        this.updateName = updateName;
+        this.valid = valid;
+        this.remark = remark;
     }
 
-    public String getUserName() {
-        return userName;
+    public Integer getRoleId() {
+        return roleId;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
     }
 
-    public String getPassword() {
-        return password;
+    public String getRoleName() {
+        return roleName;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
     }
 
     public Date getCreateTime() {
@@ -99,33 +94,25 @@ public class User {
         this.valid = valid;
     }
 
-    public User() {
+    public String getRemark() {
+        return remark;
     }
 
-    public User(Integer userId, String userName, String password, String nickname, Date createTime, String createName, Date updateTime, String updateName, Integer valid) {
-        this.userId = userId;
-        this.userName = userName;
-        this.password = password;
-        this.nickname = nickname;
-        this.createTime = createTime;
-        this.createName = createName;
-        this.updateTime = updateTime;
-        this.updateName = updateName;
-        this.valid = valid;
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 
     @Override
     public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", nickname='" + nickname + '\'' +
+        return "Role{" +
+                "roleId=" + roleId +
+                ", roleName='" + roleName + '\'' +
                 ", createTime=" + createTime +
                 ", createName='" + createName + '\'' +
                 ", updateTime=" + updateTime +
                 ", updateName='" + updateName + '\'' +
                 ", valid=" + valid +
+                ", remark='" + remark + '\'' +
                 '}';
     }
 }
