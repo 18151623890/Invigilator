@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.invigilator.mapper.DateRecordMapper">
+
+    <select id="all" resultType="com.example.invigilator.entity.DateRecord">
+        SELECT `id`,`date`,`total` FROM `date_record`
+        WHERE 1 = 1 AND valid = 1
+    </select>
+
+    <select id="conditionQuery" parameterType="com.example.invigilator.dto.DateDto" resultType="com.example.invigilator.entity.DateRecord">
+
+        SELECT d.`id`,d.`date`,d.`total` FROM `date_record` d
+        WHERE 1 = 1 AND valid = 1
+        <if test="startDate != null">
+            AND DATE_FORMAT(#{startDate},'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
+        </if>
+        <if test="endDate != null">
+            AND DATE_FORMAT(#{endDate},'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
+        </if>
+        ORDER BY d.`id`
+        <!--<choose>
+            <when test="time !=null">
+                SELECT d.`id`,d.`date`,d.`total` FROM `date_record` d WHERE 1 = 1 AND d.`id` IN
+                (
+                    SELECT t.did FROM `time_record` t
+                    WHERE 1 = 1 AND t.`valid` = 1
+                <if test="time == 0">
+                    AND '00:00:00' <![CDATA[<=]]]>  DATE_FORMAT(t.`start_time`,'%T')
+                    AND '12:59:59' <![CDATA[>=]]]> DATE_FORMAT(t.`end_time`,'%T')
+                </if>
+                <if test="time == 1">
+                    AND '13:00:00' <![CDATA[<=]]]>  DATE_FORMAT(t.`start_time`,'%T')
+                    AND '23:59:59' <![CDATA[>=]]]> DATE_FORMAT(t.`end_time`,'%T')
+                </if>
+                )
+                AND d.`valid` = 1
+            </when>
+            <otherwise>
+                SELECT d.`id`,d.`date`,d.`total` FROM `date_record` d
+                WHERE 1 = 1 AND d.`valid` = 1
+            </otherwise>
+        </choose>-->
+    </select>
+
+
+
+</mapper>

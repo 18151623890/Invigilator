@@ -16,6 +16,7 @@ public class Result {
     //数据
     private Object data;
 
+
     public Result() {
     }
 
