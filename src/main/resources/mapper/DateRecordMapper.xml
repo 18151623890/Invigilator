@@ -41,6 +41,13 @@
             </otherwise>
         </choose>-->
     </select>
+    
+    <insert id="addDate" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.example.invigilator.entity.DateRecord">
+        INSERT INTO `date_record`
+        (`date`, `total`, `valid`, `create_time`, `create_name`, `update_time`, `update_name`)
+        VALUES
+        (DATE_FORMAT(#{date},"%Y-%m-%d %H:%i:%s"), #{total}, 1, NOW(), #{createName}, NOW(),#{updateName})
+    </insert>
 
 
 

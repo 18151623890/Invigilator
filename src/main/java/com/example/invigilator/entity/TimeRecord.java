@@ -1,6 +1,7 @@
 package com.example.invigilator.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -10,6 +11,7 @@ import java.util.Date;
  * @date 2020/10/2 0:14
  * @description 时间表
  */
+@Data
 public class TimeRecord implements Serializable {
 
     private static final long serialVersionUID = 1507072733747119394L;

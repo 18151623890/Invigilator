@@ -20,5 +20,7 @@ public interface DateRecordMapper {
     //条件查询
     List<DateRecord> conditionQuery(DateDto dto);
 
+    //添加日期
+    int addDate(DateRecord dateRecord);
 
 }

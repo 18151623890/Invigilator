@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.invigilator.mapper.TimeRecordMapper">
+
+    <insert id="addTime" parameterType="List">
+        INSERT INTO `time_record`
+        (`did`, `start_time`, `end_time`, `total`, `valid`, `create_time`, `create_name`, `update_time`, `update_name`)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.did}, DATE_FORMAT(#{item.startTime},"%Y-%m-%d %H:%i:%s"), DATE_FORMAT(#{item.endTime},"%Y-%m-%d
+            %H:%i:%s"),#{item.total} ,1, NOW(), #{item.createName}, NOW(),#{item.updateName})
+        </foreach>
+    </insert>
+
+</mapper>
