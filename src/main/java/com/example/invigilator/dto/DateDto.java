@@ -37,9 +37,7 @@ public class DateDto implements Serializable {
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endDate;
 
-    public static long getSerialVersionUID() {
-        return serialVersionUID;
-    }
+
 
     public Integer getId() {
         return id;

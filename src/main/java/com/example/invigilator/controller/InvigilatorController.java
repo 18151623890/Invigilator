@@ -1,8 +1,10 @@
 package com.example.invigilator.controller;
 
 import com.example.invigilator.dto.DateDto;
+import com.example.invigilator.dto.enlistDto;
 import com.example.invigilator.service.InvigilatorService;
 import com.example.invigilator.util.Result;
+import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,14 +31,15 @@ public class InvigilatorController {
     private InvigilatorService service;
 
     //分页查询记录-条件时间段，//上午/下午不要了
-    @PostMapping(value = "page/{pageNum}/{pageSize}")
+    @PostMapping(value = "/page/{pageNum}/{pageSize}")
     public Result page(@PathVariable Integer pageNum, @PathVariable Integer pageSize, @RequestBody DateDto dto) {
         try {
-            PageHelper.startPage(pageNum, pageSize);
+            Map map = new HashMap();
+            Page page = PageHelper.startPage(pageNum, pageSize);
             List<DateDto> dtoList = service.conditionQuery(dto);
             PageInfo pageInfo = new PageInfo(dtoList);
-            Map map = new HashMap();
-            map.put("total", pageInfo.getTotal());
+
+            map.put("total", page.getTotal());
             map.put("list", pageInfo.getList());
             return Result.success(map);
         } catch (Exception e) {
@@ -59,7 +62,7 @@ public class InvigilatorController {
                 return Result.success("添加成功");
             }
         } catch (Exception e) {
-            return Result.failure("系统异常，请联系管理员");
+            return Result.failure("参数不正确，请填写正确的信息");
         }
     }
 
@@ -67,4 +70,20 @@ public class InvigilatorController {
 
     //删除
 
+    //查询所有时间段
+    @PostMapping(value = "/pageTime/{pageNum}/{pageSize}")
+    public Result pageTime(@PathVariable Integer pageNum, @PathVariable Integer pageSize, @RequestBody DateDto dto) {
+        try {
+            Map map = new HashMap();
+            Page page = PageHelper.startPage(pageNum, pageSize);
+            List<enlistDto> enlist = service.enlist(dto);
+            PageInfo pageInfo = new PageInfo(enlist);
+
+            map.put("total", page.getTotal());
+            map.put("list", pageInfo.getList());
+            return Result.success(map);
+        } catch (Exception e) {
+            return Result.failure("系统异常，请联系管理员");
+        }
+    }
 }

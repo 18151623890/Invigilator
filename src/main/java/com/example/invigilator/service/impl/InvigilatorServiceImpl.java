@@ -1,6 +1,8 @@
 package com.example.invigilator.service.impl;
 
 import com.example.invigilator.dto.DateDto;
+import com.example.invigilator.dto.enlistDto;
+import com.example.invigilator.dto.timeCountDto;
 import com.example.invigilator.dto.timeDto;
 import com.example.invigilator.entity.DateRecord;
 import com.example.invigilator.entity.TimeRecord;
@@ -95,6 +97,11 @@ public class InvigilatorServiceImpl implements InvigilatorService {
 
         timeRecordMapper.addTime(timeRecordList);
         return 1;
+    }
+
+    @Override
+    public List<enlistDto> enlist(DateDto dto) {
+        return timeRecordMapper.all(dto);
     }
 
     private Date updateTime(Date date, Date time) {

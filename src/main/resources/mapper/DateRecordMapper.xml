@@ -7,7 +7,8 @@
         WHERE 1 = 1 AND valid = 1
     </select>
 
-    <select id="conditionQuery" parameterType="com.example.invigilator.dto.DateDto" resultType="com.example.invigilator.entity.DateRecord">
+    <select id="conditionQuery" parameterType="com.example.invigilator.dto.DateDto"
+            resultType="com.example.invigilator.entity.DateRecord">
 
         SELECT d.`id`,d.`date`,d.`total` FROM `date_record` d
         WHERE 1 = 1 AND valid = 1
@@ -17,7 +18,7 @@
         <if test="endDate != null">
             AND DATE_FORMAT(#{endDate},'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
         </if>
-        ORDER BY d.`id`
+        ORDER BY d.`date` DESC
         <!--<choose>
             <when test="time !=null">
                 SELECT d.`id`,d.`date`,d.`total` FROM `date_record` d WHERE 1 = 1 AND d.`id` IN
@@ -41,8 +42,9 @@
             </otherwise>
         </choose>-->
     </select>
-    
-    <insert id="addDate" useGeneratedKeys="true" keyProperty="id" keyColumn="id" parameterType="com.example.invigilator.entity.DateRecord">
+
+    <insert id="addDate" useGeneratedKeys="true" keyProperty="id" keyColumn="id"
+            parameterType="com.example.invigilator.entity.DateRecord">
         INSERT INTO `date_record`
         (`date`, `total`, `valid`, `create_time`, `create_name`, `update_time`, `update_name`)
         VALUES

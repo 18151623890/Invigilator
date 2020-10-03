@@ -12,4 +12,19 @@
         </foreach>
     </insert>
 
+    <select id="all" parameterType="com.example.invigilator.dto.DateDto" resultType="com.example.invigilator.dto.enlistDto">
+        SELECT t.`id`,t.`did`,t.`start_time` AS 'startTime',t.`end_time` AS 'endTime',t.`total`,
+        d.`date`,a.`joinTotal` FROM `time_record` t
+        LEFT JOIN `date_record` d ON t.`did` = d.`id`
+        LEFT JOIN (SELECT u.`tid`,COUNT(uid) AS 'joinTotal' FROM `user_time` u
+        GROUP BY u.`tid`) a ON a.`tid` = t.`id`
+        WHERE 1 = 1 AND t.`valid` = 1 AND d.`valid` = 1
+        <if test="startDate != null">
+            AND DATE_FORMAT(#{startDate},'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
+        </if>
+        <if test="endDate != null">
+            AND DATE_FORMAT(#{endDate},'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
+        </if>
+        ORDER BY d.`date` DESC,t.`start_time`
+    </select>
 </mapper>

@@ -1,5 +1,7 @@
 package com.example.invigilator.mapper;
 
+import com.example.invigilator.dto.DateDto;
+import com.example.invigilator.dto.enlistDto;
 import com.example.invigilator.entity.TimeRecord;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,4 +17,7 @@ public interface TimeRecordMapper {
 
     //添加时间
     int addTime(List<TimeRecord> list);
+
+    //查询
+    List<enlistDto> all(DateDto dto);
 }
