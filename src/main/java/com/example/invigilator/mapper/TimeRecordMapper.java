@@ -33,4 +33,6 @@ public interface TimeRecordMapper {
     StartTimeAndEndTime queryTime(@Param("id") Integer id);
 
     List<StartTimeAndEndTime> exportTime(@Param("ids")List<Integer> ids);
+
+    int unSignUp(@Param("uid")Integer uid, @Param("tid")Integer tid);
 }

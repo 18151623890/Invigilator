@@ -15,10 +15,11 @@
     <select id="all" parameterType="com.example.invigilator.dto.DateDto"
             resultType="com.example.invigilator.dto.EnlistDto">
         SELECT t.`id`,t.`did`,t.`start_time` AS 'startTime',t.`end_time` AS 'endTime',t.`total`,
-        d.`date`,a.`joinTotal` FROM `time_record` t
+        d.`date`,a.`joinTotal`,ISNULL(b.`i`) AS 'flag' FROM `time_record` t
         LEFT JOIN `date_record` d ON t.`did` = d.`id`
         LEFT JOIN (SELECT u.`tid`,COUNT(uid) AS 'joinTotal' FROM `user_time` u
         GROUP BY u.`tid`) a ON a.`tid` = t.`id`
+        LEFT JOIN (SELECT `tid`,`id` AS 'i' FROM `user_time` WHERE `uid` = #{id}) b ON b.`tid` = t.`id`
         WHERE 1 = 1 AND t.`valid` = 1 AND d.`valid` = 1
         <if test="startDate != null">
             AND DATE_FORMAT(#{startDate},'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
@@ -26,7 +27,7 @@
         <if test="endDate != null">
             AND DATE_FORMAT(#{endDate},'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
         </if>
-        ORDER BY d.`date` DESC,t.`start_time`
+        ORDER BY d.`date` DESC,t.`start_time`,t.`end_time`
     </select>
 
     <delete id="del" parameterType="Integer">
@@ -50,7 +51,10 @@
              #{item}
         </foreach>
 
-         ORDER BY d.`date`,t.`start_time`
+         ORDER BY d.`date`,t.`start_time`,t.`end_time`
     </select>
 
+    <delete id="unSignUp">
+        DELETE FROM `user_time` WHERE `uid` = #{uid} AND `tid` = #{tid}
+    </delete>
 </mapper>

@@ -152,6 +152,11 @@ public class InvigilatorServiceImpl implements InvigilatorService {
         return timeRecordMapper.exportTime(id);
     }
 
+    @Override
+    public int unSignUp(Integer uid, Integer tid) {
+        return timeRecordMapper.unSignUp(uid,tid);
+    }
+
     private Date updateTime(Date date, Date time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String ymd = format.format(date);

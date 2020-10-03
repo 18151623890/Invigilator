@@ -26,4 +26,6 @@ public interface InvigilatorService {
     int signUp(Integer tid,Integer uid);
 
     List<StartTimeAndEndTime> exportTime(List<Integer> id);
+
+    int unSignUp(Integer uid, Integer tid);
 }

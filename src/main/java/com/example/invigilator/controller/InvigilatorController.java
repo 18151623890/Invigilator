@@ -113,4 +113,20 @@ public class InvigilatorController {
 
     }
 
+    //取消报名
+    @GetMapping(value = "/unSignUp/{uid}/{tid}")
+    public Result unSignUp(@PathVariable Integer uid, @PathVariable Integer tid) {
+        try {
+            int i = service.unSignUp(uid, tid);
+            if (i > 0) {
+                return Result.success("取消成功");
+            }else {
+                return Result.failure("系统异常，请联系管理员");
+            }
+        } catch (Exception e) {
+            return Result.failure("系统异常，请联系管理员");
+        }
+    }
+
+
 }

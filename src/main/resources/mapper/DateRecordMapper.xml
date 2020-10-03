@@ -64,7 +64,7 @@
             #{item}
         </foreach>
         GROUP BY d.`date`
-        ORDER BY d.`date`,t.`start_time`
+        ORDER BY d.`date`,t.`start_time`,t.`end_time`
     </select>
 
 </mapper>

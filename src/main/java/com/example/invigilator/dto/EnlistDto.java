@@ -40,4 +40,7 @@ public class EnlistDto implements Serializable {
     //已参加人数
     private Integer joinTotal;
 
+    //是否报名--（相对登录方） 0.报名  1.未报名
+    private Integer flag;
+
 }
