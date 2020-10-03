@@ -12,7 +12,12 @@ import javax.annotation.Resource;
 public class UserServiceImpl implements UserService {
     @Resource
     private UserMapper userMapper;
-
+    //检查用户名是否重复
+    @Override
+    public int checkUserName(String checkUserName) {
+        return userMapper.checkUserName(checkUserName);
+    }
+    //向user表、user_role表、user_school表新增
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int insertUser(User user,Integer roleId,Integer schoolId) {

@@ -21,6 +21,11 @@ public class UserController {
     //用户注册
     @RequestMapping(value = "/insert/{roleId}/{schoolId}",method = RequestMethod.POST)
     public Result insertUser(@RequestBody User user,@PathVariable Integer roleId,@PathVariable Integer schoolId){
+        String checkUserName = user.getUserName();
+        int count = userService.checkUserName(checkUserName);
+        if (count==1){
+            return Result.failure("用户名已存在");
+        }
         int result = userService.insertUser(user,roleId,schoolId);
         if (result==1){
             return Result.success("注册成功");

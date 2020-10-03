@@ -3,6 +3,11 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.example.invigilator.mapper.UserMapper">
+    <!--检查用户名是否重复-->
+    <select id="checkUserName" parameterType="java.lang.String" resultType="int">
+        select count(*) from user WHERE username = #{checkUserName}
+    </select>
+    <!--*******************************新增************************************-->
     <insert id="insertUser" parameterType="com.example.invigilator.entity.User">
         insert into user
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -76,6 +81,7 @@
     <insert id="insertUserRole" parameterType="int">
         INSERT INTO user_role (uid,rid) VALUES (#{userId},#{roleId})
     </insert>
+    <!--*********************************************************************-->
 
     <delete id="del" parameterType="Integer">
         DELETE FROM `user_time` WHERE `tid` IN (SELECT `id` FROM `time_record` WHERE `did` = #{id})
