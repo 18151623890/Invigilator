@@ -29,7 +29,7 @@
     </select>
 
     <delete id="del" parameterType="Integer">
-        DELETE FROM `time_record` WHERE `id` = #{id}
+        DELETE FROM `time_record` WHERE `did` = #{id}
     </delete>
 
 
