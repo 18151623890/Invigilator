@@ -13,6 +13,13 @@ import java.util.Date;
 @Data
 public class StartTimeAndEndTime {
 
+    //主键
+    private Integer id;
+
+    //日期
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+    private Date date;
+
     //开始时间
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date startTime;

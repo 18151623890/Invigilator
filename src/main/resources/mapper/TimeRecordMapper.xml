@@ -41,5 +41,16 @@
        SELECT `start_time` AS 'startTime',`end_time` AS 'endTime' FROM `time_record` WHERE `id` = #{id}
     </select>
 
+    <select id="exportTime" parameterType="list" resultType="com.example.invigilator.entity.StartTimeAndEndTime">
+         SELECT t.`id`,t.`start_time` AS 'startTime',t.`end_time` AS 'endTime',d.`date` FROM `time_record` t
+         LEFT JOIN `date_record` d ON t.`did` = d.`id`
+         WHERE 1 = 1 AND t.`valid` = 1 AND d.`valid` = 1
+         AND d.`id` IN
+        <foreach collection="ids" item="item" separator="," close=")" open="(">
+             #{item}
+        </foreach>
+
+         ORDER BY d.`date`,t.`start_time`
+    </select>
 
 </mapper>

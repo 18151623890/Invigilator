@@ -2,6 +2,8 @@ package com.example.invigilator.mapper;
 
 import com.example.invigilator.dto.DateDto;
 import com.example.invigilator.entity.DateRecord;
+import com.example.invigilator.entity.DateTotal;
+import com.example.invigilator.entity.StartTimeAndEndTime;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
@@ -26,4 +28,6 @@ public interface DateRecordMapper {
 
     //删除
     int del(@Param("id") Integer id);
+
+    List<DateTotal> exportDate(@Param("ids")List<Integer> ids);
 }

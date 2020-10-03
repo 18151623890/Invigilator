@@ -2,6 +2,7 @@ package com.example.invigilator.service;
 
 import com.example.invigilator.dto.DateDto;
 import com.example.invigilator.dto.EnlistDto;
+import com.example.invigilator.entity.StartTimeAndEndTime;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface InvigilatorService {
     int delDate(Integer id);
 
     int signUp(Integer tid,Integer uid);
+
+    List<StartTimeAndEndTime> exportTime(List<Integer> id);
 }

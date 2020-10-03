@@ -2,9 +2,11 @@ package com.example.invigilator.mapper;
 
 import com.example.invigilator.entity.StartTimeAndEndTime;
 import com.example.invigilator.entity.User;
+import com.example.invigilator.entity.UserHaveTime;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 public interface UserMapper {
     /************************新增*******************************/
@@ -26,5 +28,8 @@ public interface UserMapper {
 
     //报名
     int addTime(@Param("uid") Integer uid,@Param("tid") Integer tid);
+
+    //已报时间
+    List<UserHaveTime> exportUser(@Param("ids")List<Integer> ids);
 
 }

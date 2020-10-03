@@ -29,5 +29,8 @@ public interface TimeRecordMapper {
     //删除
     int del(@Param("id") Integer id);
 
+    //根据时间Id 查询时间的范围
     StartTimeAndEndTime queryTime(@Param("id") Integer id);
+
+    List<StartTimeAndEndTime> exportTime(@Param("ids")List<Integer> ids);
 }

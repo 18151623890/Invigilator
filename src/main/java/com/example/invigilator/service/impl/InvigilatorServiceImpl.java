@@ -147,6 +147,11 @@ public class InvigilatorServiceImpl implements InvigilatorService {
         }
     }
 
+    @Override
+    public List<StartTimeAndEndTime> exportTime(List<Integer> id) {
+        return timeRecordMapper.exportTime(id);
+    }
+
     private Date updateTime(Date date, Date time) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String ymd = format.format(date);

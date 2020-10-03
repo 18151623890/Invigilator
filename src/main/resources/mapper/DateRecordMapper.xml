@@ -55,5 +55,16 @@
         DELETE FROM `date_record` WHERE `id` = #{id}
     </delete>
 
+    <select id="exportDate" parameterType="list" resultType="com.example.invigilator.entity.DateTotal">
+        SELECT d.`date`,COUNT(t.`id`) AS 'total' FROM `time_record` t
+        LEFT JOIN `date_record` d ON t.`did` = d.`id`
+        WHERE 1 = 1 AND t.`valid` = 1 AND d.`valid` = 1
+        AND d.`id` IN
+        <foreach collection="ids" item="item" separator="," close=")" open="(">
+            #{item}
+        </foreach>
+        GROUP BY d.`date`
+        ORDER BY d.`date`,t.`start_time`
+    </select>
 
 </mapper>
