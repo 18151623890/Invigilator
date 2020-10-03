@@ -27,4 +27,11 @@
         </if>
         ORDER BY d.`date` DESC,t.`start_time`
     </select>
+
+    <delete id="del" parameterType="Integer">
+        DELETE FROM `time_record` WHERE `id` = #{id}
+    </delete>
+
+
+
 </mapper>

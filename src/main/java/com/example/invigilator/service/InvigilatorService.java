@@ -22,4 +22,5 @@ public interface InvigilatorService {
 
     List<enlistDto> enlist(DateDto dto);
 
+    int delDate(Integer id);
 }

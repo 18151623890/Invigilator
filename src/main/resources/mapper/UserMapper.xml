@@ -77,5 +77,8 @@
         INSERT INTO user_role (uid,rid) VALUES (#{userId},#{roleId})
     </insert>
 
+    <delete id="del" parameterType="Integer">
+        DELETE FROM `user_time` WHERE `tid` IN (SELECT `id` FROM `time_record` WHERE `did` = #{id})
+    </delete>
 
 </mapper>

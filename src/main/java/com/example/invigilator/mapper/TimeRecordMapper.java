@@ -4,6 +4,7 @@ import com.example.invigilator.dto.DateDto;
 import com.example.invigilator.dto.enlistDto;
 import com.example.invigilator.entity.TimeRecord;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,7 @@ public interface TimeRecordMapper {
 
     //查询
     List<enlistDto> all(DateDto dto);
+
+    //删除
+    int del(@Param("id") Integer id);
 }

@@ -8,6 +8,7 @@ import com.example.invigilator.entity.DateRecord;
 import com.example.invigilator.entity.TimeRecord;
 import com.example.invigilator.mapper.DateRecordMapper;
 import com.example.invigilator.mapper.TimeRecordMapper;
+import com.example.invigilator.mapper.UserMapper;
 import com.example.invigilator.service.InvigilatorService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,8 @@ public class InvigilatorServiceImpl implements InvigilatorService {
     private DateRecordMapper dateRecordMapper;
     @Resource
     private TimeRecordMapper timeRecordMapper;
+    @Resource
+    private UserMapper userMapper;
 
     @Override
     public List<DateDto> all() {
@@ -102,6 +105,15 @@ public class InvigilatorServiceImpl implements InvigilatorService {
     @Override
     public List<enlistDto> enlist(DateDto dto) {
         return timeRecordMapper.all(dto);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int delDate(Integer id) {
+        userMapper.del(id);
+        timeRecordMapper.del(id);
+        dateRecordMapper.del(id);
+        return 1;
     }
 
     private Date updateTime(Date date, Date time) {

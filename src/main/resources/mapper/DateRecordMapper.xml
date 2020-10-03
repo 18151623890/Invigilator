@@ -51,6 +51,9 @@
         (DATE_FORMAT(#{date},"%Y-%m-%d %H:%i:%s"), #{total}, 1, NOW(), #{createName}, NOW(),#{updateName})
     </insert>
 
+    <delete id="del" parameterType="Integer">
+        DELETE FROM `date_record` WHERE `id` = #{id}
+    </delete>
 
 
 </mapper>

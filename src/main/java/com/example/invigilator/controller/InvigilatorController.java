@@ -7,6 +7,7 @@ import com.example.invigilator.util.Result;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,6 +70,12 @@ public class InvigilatorController {
     //修改
 
     //删除
+    @DeleteMapping(value = "/del/{id}")
+    public Result del(@PathVariable Integer id) {
+        service.delDate(id);
+        return Result.success("删除成功");
+    }
+
 
     //查询所有时间段
     @PostMapping(value = "/pageTime/{pageNum}/{pageSize}")

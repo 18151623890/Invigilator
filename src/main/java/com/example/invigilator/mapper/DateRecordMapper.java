@@ -3,6 +3,7 @@ package com.example.invigilator.mapper;
 import com.example.invigilator.dto.DateDto;
 import com.example.invigilator.entity.DateRecord;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface DateRecordMapper {
     //添加日期
     int addDate(DateRecord dateRecord);
 
+    //删除
+    int del(@Param("id") Integer id);
 }
