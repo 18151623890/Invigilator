@@ -1,15 +1,16 @@
 package com.example.invigilator.service.impl;
 
 import com.example.invigilator.dto.DateDto;
-import com.example.invigilator.dto.enlistDto;
-import com.example.invigilator.dto.timeCountDto;
-import com.example.invigilator.dto.timeDto;
+import com.example.invigilator.dto.EnlistDto;
+import com.example.invigilator.dto.TimeDto;
 import com.example.invigilator.entity.DateRecord;
+import com.example.invigilator.entity.StartTimeAndEndTime;
 import com.example.invigilator.entity.TimeRecord;
 import com.example.invigilator.mapper.DateRecordMapper;
 import com.example.invigilator.mapper.TimeRecordMapper;
 import com.example.invigilator.mapper.UserMapper;
 import com.example.invigilator.service.InvigilatorService;
+import com.example.invigilator.util.DateTimeUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -74,12 +75,12 @@ public class InvigilatorServiceImpl implements InvigilatorService {
         Date date = dto.getDate();
         dateRecord.setDate(date);
 
-        List<timeDto> timeList = dto.getTimeList();
+        List<TimeDto> timeList = dto.getTimeList();
         if (timeList == null || timeList.isEmpty()) {
             return 0;
         }
         Integer total = 0;
-        for (timeDto timeDto : timeList) {
+        for (TimeDto timeDto : timeList) {
             total += timeDto.getTotal();
         }
         dateRecord.setTotal(total);
@@ -88,7 +89,7 @@ public class InvigilatorServiceImpl implements InvigilatorService {
 
         Integer id = dateRecord.getId();
         List<TimeRecord> timeRecordList = new ArrayList<>();
-        for (timeDto element : timeList) {
+        for (TimeDto element : timeList) {
             //处理时间 日期+时间
             element.setStartTime(updateTime(date, element.getStartTime()));
             element.setEndTime(updateTime(date, element.getEndTime()));
@@ -103,7 +104,7 @@ public class InvigilatorServiceImpl implements InvigilatorService {
     }
 
     @Override
-    public List<enlistDto> enlist(DateDto dto) {
+    public List<EnlistDto> enlist(DateDto dto) {
         return timeRecordMapper.all(dto);
     }
 
@@ -114,6 +115,36 @@ public class InvigilatorServiceImpl implements InvigilatorService {
         timeRecordMapper.del(id);
         dateRecordMapper.del(id);
         return 1;
+    }
+
+    @Override
+    synchronized
+    public int signUp(Integer tid, Integer uid) {
+        int quota = timeRecordMapper.queryQuota(tid);
+        if (quota == 1) {
+            synchronized (this) {
+                List<StartTimeAndEndTime> userTime = userMapper.queryTime(uid);
+                StartTimeAndEndTime timeInfo = timeRecordMapper.queryTime(tid);
+                for (StartTimeAndEndTime time : userTime) {
+                    boolean overlap = DateTimeUtils.isOverlap(time.getStartTime(), time.getEndTime(), timeInfo.getStartTime(), timeInfo.getEndTime());
+                    if (overlap) {
+                        return 0;//存在重复的时间
+                    }
+                }
+                synchronized (this) {
+                    int i = timeRecordMapper.queryQuota(tid);
+                    if (i == 1) {
+                        //添加
+                        userMapper.addTime(uid, tid);
+                        return 1;
+                    } else {
+                        return -1;//没有名额
+                    }
+                }
+            }
+        } else {
+            return -1;//没有名额
+        }
     }
 
     private Date updateTime(Date date, Date time) {

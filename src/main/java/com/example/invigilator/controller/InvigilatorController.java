@@ -1,13 +1,14 @@
 package com.example.invigilator.controller;
 
 import com.example.invigilator.dto.DateDto;
-import com.example.invigilator.dto.enlistDto;
+import com.example.invigilator.dto.EnlistDto;
 import com.example.invigilator.service.InvigilatorService;
 import com.example.invigilator.util.Result;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -31,7 +32,7 @@ public class InvigilatorController {
     @Resource
     private InvigilatorService service;
 
-    //分页查询记录-条件时间段，//上午/下午不要了
+    //分页查询记录-条件日期段
     @PostMapping(value = "/page/{pageNum}/{pageSize}")
     public Result page(@PathVariable Integer pageNum, @PathVariable Integer pageSize, @RequestBody DateDto dto) {
         try {
@@ -83,7 +84,7 @@ public class InvigilatorController {
         try {
             Map map = new HashMap();
             Page page = PageHelper.startPage(pageNum, pageSize);
-            List<enlistDto> enlist = service.enlist(dto);
+            List<EnlistDto> enlist = service.enlist(dto);
             PageInfo pageInfo = new PageInfo(enlist);
 
             map.put("total", page.getTotal());
@@ -93,4 +94,23 @@ public class InvigilatorController {
             return Result.failure("系统异常，请联系管理员");
         }
     }
+
+    //报名-->>是否还有名额-->>时间不能重叠
+    @GetMapping(value = "/signUp/{uid}/{tid}")
+    public Result signUp(@PathVariable Integer uid, @PathVariable Integer tid) {
+        try {
+            int i = service.signUp(tid, uid);
+            if (i == -1) {
+                return Result.failure("名额已满，无法继续报名");
+            } else if (i == 0) {
+                return Result.failure("时间安排重复，请报名其余时间");
+            } else {
+                return Result.success("报名成功");
+            }
+        } catch (Exception e) {
+            return Result.failure("系统异常，请联系管理员");
+        }
+
+    }
+
 }

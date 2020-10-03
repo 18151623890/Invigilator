@@ -29,7 +29,7 @@ public class DateDto implements Serializable {
     private Integer total;
 
     //时间集合
-    private List<timeDto> timeList;
+    private List<TimeDto> timeList;
 
     //日期段-查询用
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")

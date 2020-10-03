@@ -12,7 +12,7 @@ import java.util.Date;
  * @description
  */
 @Data
-public class enlistDto implements Serializable {
+public class EnlistDto implements Serializable {
 
     private static final long serialVersionUID = -6347946371758142530L;
 

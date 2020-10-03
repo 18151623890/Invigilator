@@ -12,7 +12,7 @@ import java.util.Date;
  * @description
  */
 @Data
-public class timeCountDto implements Serializable {
+public class TimeCountDto implements Serializable {
 
     private static final long serialVersionUID = 5599920091690627246L;
 

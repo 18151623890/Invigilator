@@ -1,10 +1,8 @@
 package com.example.invigilator.service;
 
 import com.example.invigilator.dto.DateDto;
-import com.example.invigilator.dto.enlistDto;
-import com.github.pagehelper.PageInfo;
+import com.example.invigilator.dto.EnlistDto;
 
-import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -20,7 +18,9 @@ public interface InvigilatorService {
 
     int addDate(DateDto dto);
 
-    List<enlistDto> enlist(DateDto dto);
+    List<EnlistDto> enlist(DateDto dto);
 
     int delDate(Integer id);
+
+    int signUp(Integer tid,Integer uid);
 }

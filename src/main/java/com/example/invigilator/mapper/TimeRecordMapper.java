@@ -1,7 +1,8 @@
 package com.example.invigilator.mapper;
 
 import com.example.invigilator.dto.DateDto;
-import com.example.invigilator.dto.enlistDto;
+import com.example.invigilator.dto.EnlistDto;
+import com.example.invigilator.entity.StartTimeAndEndTime;
 import com.example.invigilator.entity.TimeRecord;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -20,8 +21,13 @@ public interface TimeRecordMapper {
     int addTime(List<TimeRecord> list);
 
     //查询
-    List<enlistDto> all(DateDto dto);
+    List<EnlistDto> all(DateDto dto);
+
+    //是否还有空名额
+    int queryQuota(@Param("id") Integer id);
 
     //删除
     int del(@Param("id") Integer id);
+
+    StartTimeAndEndTime queryTime(@Param("id") Integer id);
 }

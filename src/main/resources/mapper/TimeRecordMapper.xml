@@ -12,7 +12,8 @@
         </foreach>
     </insert>
 
-    <select id="all" parameterType="com.example.invigilator.dto.DateDto" resultType="com.example.invigilator.dto.enlistDto">
+    <select id="all" parameterType="com.example.invigilator.dto.DateDto"
+            resultType="com.example.invigilator.dto.EnlistDto">
         SELECT t.`id`,t.`did`,t.`start_time` AS 'startTime',t.`end_time` AS 'endTime',t.`total`,
         d.`date`,a.`joinTotal` FROM `time_record` t
         LEFT JOIN `date_record` d ON t.`did` = d.`id`
@@ -32,6 +33,13 @@
         DELETE FROM `time_record` WHERE `did` = #{id}
     </delete>
 
+    <select id="queryQuota" parameterType="Integer" resultType="Integer">
+        SELECT (SELECT COUNT(`id`) FROM `user_time` WHERE `tid` = #{id})<![CDATA[<]]>(SELECT `total` FROM `time_record` WHERE `id` = #{id})
+    </select>
+
+    <select id="queryTime" parameterType="Integer" resultType="com.example.invigilator.entity.StartTimeAndEndTime">
+       SELECT `start_time` AS 'startTime',`end_time` AS 'endTime' FROM `time_record` WHERE `id` = #{id}
+    </select>
 
 
 </mapper>
