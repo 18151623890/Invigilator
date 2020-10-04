@@ -26,11 +26,12 @@ public class UserController {
         if (count==1){
             return Result.failure("用户名已存在");
         }
+        user.setValid(1);
         int result = userService.insertUser(user,roleId,schoolId);
         if (result==1){
             return Result.success("注册成功");
         }else {
-            return Result.failure("注册失败");
+            return Result.failure("系统异常，请联系系统管理员");
         }
     }
 
