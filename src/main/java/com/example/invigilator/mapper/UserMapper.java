@@ -32,4 +32,10 @@ public interface UserMapper {
     //已报时间
     List<UserHaveTime> exportUser(@Param("ids")List<Integer> ids);
 
+    //查询所有记录--条件：根据名字（可选）
+    List<User> all(User user);
+
+    int delUser(@Param("id") Integer id);
+
+    User byId(Integer id);
 }

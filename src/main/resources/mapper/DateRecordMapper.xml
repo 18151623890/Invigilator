@@ -10,7 +10,8 @@
     <select id="conditionQuery" parameterType="com.example.invigilator.dto.DateDto"
             resultType="com.example.invigilator.entity.DateRecord">
 
-        SELECT d.`id`,d.`date`,d.`total`,d.`valid` FROM `date_record` d
+        SELECT d.`id`,d.`date`,d.`total`,d.`valid`,count(t.`id`) AS 'totalTime' FROM `date_record` d
+        left join `time_record` t on t.`did` = d.`id`
         WHERE 1 = 1
         <if test="startDate != null">
             AND DATE_FORMAT(#{startDate},'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
@@ -18,6 +19,7 @@
         <if test="endDate != null">
             AND DATE_FORMAT(#{endDate},'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
         </if>
+        GROUP BY d.`id`
         ORDER BY d.`date` DESC
         <!--<choose>
             <when test="time !=null">

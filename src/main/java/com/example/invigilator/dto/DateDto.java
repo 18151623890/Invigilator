@@ -36,7 +36,8 @@ public class DateDto implements Serializable {
     private Date startDate;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date endDate;
-
+    //总场数
+    private Integer totalTime;
 
     //有效性
     private Integer valid;

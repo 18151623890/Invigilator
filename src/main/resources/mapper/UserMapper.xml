@@ -87,6 +87,10 @@
         DELETE FROM `user_time` WHERE `tid` IN (SELECT `id` FROM `time_record` WHERE `did` = #{id})
     </delete>
 
+    <update id="delUser" parameterType="Integer">
+         UPDATE `user` SET `valid` = 0 WHERE `id` = #{id}
+    </update>
+
     <select id="queryTime" parameterType="Integer" resultType="com.example.invigilator.entity.StartTimeAndEndTime">
         SELECT `start_time` AS 'startTime',`end_time` AS 'endTime' FROM `time_record` WHERE `id` IN (SELECT `tid` FROM `user_time` WHERE `uid` = #{uid})
     </select>
@@ -108,5 +112,20 @@
         AND `valid` = 1) a ON a.`id` = ut.`tid`
         WHERE 1 = 1 AND u.`valid` = 1
         GROUP BY u.`id`
+    </select>
+
+    <select id="all" parameterType="com.example.invigilator.entity.User" resultType="com.example.invigilator.entity.User">
+        SELECT 	`id` AS 'userId',`username` AS  'userName',`nickname`,`valid` FROM `user` WHERE 1 = 1
+            <if test="nickname != null and nickname != ''">
+               AND `nickname` LIKE CONCAT('%',#{nickname},'%')
+            </if>
+        <if test="userName != null and userName != ''">
+            AND `username` LIKE CONCAT('%',#{userName},'%')
+        </if>
+         ORDER BY `id`
+    </select>
+
+    <select id="byId" parameterType="Integer" resultType="com.example.invigilator.entity.User">
+        SELECT 	`id` AS 'userId',`username` AS 'userName',`password`,`nickname`,`valid` FROM `user` WHERE 1 = 1 AND `id` = #{id}
     </select>
 </mapper>

@@ -42,4 +42,7 @@ public class DateRecord implements Serializable {
 
     //修改人
     private String updateName;
+
+    //总场数
+    private Integer totalTime;
 }
