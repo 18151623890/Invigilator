@@ -10,8 +10,8 @@
     <select id="conditionQuery" parameterType="com.example.invigilator.dto.DateDto"
             resultType="com.example.invigilator.entity.DateRecord">
 
-        SELECT d.`id`,d.`date`,d.`total` FROM `date_record` d
-        WHERE 1 = 1 AND valid = 1
+        SELECT d.`id`,d.`date`,d.`total`,d.`valid` FROM `date_record` d
+        WHERE 1 = 1
         <if test="startDate != null">
             AND DATE_FORMAT(#{startDate},'%Y-%m-%d') <![CDATA[<=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
         </if>
@@ -58,7 +58,7 @@
     <select id="exportDate" parameterType="list" resultType="com.example.invigilator.entity.DateTotal">
         SELECT d.`date`,COUNT(t.`id`) AS 'total' FROM `time_record` t
         LEFT JOIN `date_record` d ON t.`did` = d.`id`
-        WHERE 1 = 1 AND t.`valid` = 1 AND d.`valid` = 1
+        WHERE 1 = 1 AND t.`valid` = 1
         AND d.`id` IN
         <foreach collection="ids" item="item" separator="," close=")" open="(">
             #{item}
@@ -66,5 +66,8 @@
         GROUP BY d.`date`
         ORDER BY d.`date`,t.`start_time`,t.`end_time`
     </select>
+    <update id="stop" parameterType="Integer">
+        UPDATE `date_record` SET `valid` = 0  WHERE `id` =  #{id}
+    </update>
 
 </mapper>

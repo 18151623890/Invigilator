@@ -49,6 +49,20 @@ public class InvigilatorController {
         }
     }
 
+    //停止报名
+    @GetMapping(value = "/stop/{id}")
+    public Result stop(@PathVariable Integer id){
+        try {
+            int stop = service.stop(id);
+            if (stop > 0){
+                return Result.success("已停止报名");
+            }else{
+                return Result.failure("系统异常，请联系管理员");
+            }
+        } catch (Exception e) {
+            return Result.failure("系统异常，请联系管理员");
+        }
+    }
     //根据日期ID查询详细信息
 
     //根据时间ID查询已报名人员
@@ -103,7 +117,7 @@ public class InvigilatorController {
             if (i == -1) {
                 return Result.failure("名额已满，无法继续报名");
             } else if (i == 0) {
-                return Result.failure("时间安排重复，请报名其余时间");
+                return Result.failure("时间安排冲突，请报名其余时间");
             } else {
                 return Result.success("报名成功");
             }

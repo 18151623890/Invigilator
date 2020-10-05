@@ -31,4 +31,7 @@ public class TimeDto implements Serializable {
     //需求总人数
     private Integer total;
 
+    //备注
+    private String remarks;
+
 }

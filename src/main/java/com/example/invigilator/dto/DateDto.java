@@ -38,4 +38,8 @@ public class DateDto implements Serializable {
     private Date endDate;
 
 
+    //有效性
+    private Integer valid;
+
+
 }

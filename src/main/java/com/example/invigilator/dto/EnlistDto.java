@@ -43,4 +43,7 @@ public class EnlistDto implements Serializable {
     //是否报名--（相对登录方） 0.报名  1.未报名
     private Integer flag;
 
+    //备注
+    private String remarks;
+
 }

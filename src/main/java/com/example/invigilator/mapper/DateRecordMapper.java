@@ -29,5 +29,8 @@ public interface DateRecordMapper {
     //删除
     int del(@Param("id") Integer id);
 
+    //停止报名
+    int stop(@Param("id") Integer id);
+
     List<DateTotal> exportDate(@Param("ids")List<Integer> ids);
 }

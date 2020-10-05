@@ -15,6 +15,8 @@ public interface InvigilatorService {
 
     List<DateDto> all();
 
+    int stop(Integer id);
+
     List<DateDto> conditionQuery(DateDto dto);
 
     int addDate(DateDto dto);

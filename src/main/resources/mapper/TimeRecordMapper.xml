@@ -4,18 +4,19 @@
 
     <insert id="addTime" parameterType="List">
         INSERT INTO `time_record`
-        (`did`, `start_time`, `end_time`, `total`, `valid`, `create_time`, `create_name`, `update_time`, `update_name`)
+        (`did`, `start_time`, `end_time`, `remarks`,`total`, `valid`, `create_time`, `create_name`, `update_time`,
+        `update_name`)
         VALUES
         <foreach collection="list" item="item" separator=",">
             (#{item.did}, DATE_FORMAT(#{item.startTime},"%Y-%m-%d %H:%i:%s"), DATE_FORMAT(#{item.endTime},"%Y-%m-%d
-            %H:%i:%s"),#{item.total} ,1, NOW(), #{item.createName}, NOW(),#{item.updateName})
+            %H:%i:%s"),#{item.remarks},#{item.total} ,1, NOW(), #{item.createName}, NOW(),#{item.updateName})
         </foreach>
     </insert>
 
     <select id="all" parameterType="com.example.invigilator.dto.DateDto"
             resultType="com.example.invigilator.dto.EnlistDto">
         SELECT t.`id`,t.`did`,t.`start_time` AS 'startTime',t.`end_time` AS 'endTime',t.`total`,
-        d.`date`,a.`joinTotal`,ISNULL(b.`i`) AS 'flag' FROM `time_record` t
+        d.`date`,a.`joinTotal`,ISNULL(b.`i`) AS 'flag',t.`remarks` FROM `time_record` t
         LEFT JOIN `date_record` d ON t.`did` = d.`id`
         LEFT JOIN (SELECT u.`tid`,COUNT(uid) AS 'joinTotal' FROM `user_time` u
         GROUP BY u.`tid`) a ON a.`tid` = t.`id`
@@ -27,7 +28,7 @@
         <if test="endDate != null">
             AND DATE_FORMAT(#{endDate},'%Y-%m-%d') <![CDATA[>=]]> DATE_FORMAT(d.`date`,'%Y-%m-%d')
         </if>
-        ORDER BY d.`date` DESC,t.`start_time`,t.`end_time`
+        ORDER BY d.`date` DESC,t.`start_time`,t.`end_time`,t.`id`
     </select>
 
     <delete id="del" parameterType="Integer">
@@ -43,15 +44,15 @@
     </select>
 
     <select id="exportTime" parameterType="list" resultType="com.example.invigilator.entity.StartTimeAndEndTime">
-         SELECT t.`id`,t.`start_time` AS 'startTime',t.`end_time` AS 'endTime',d.`date` FROM `time_record` t
-         LEFT JOIN `date_record` d ON t.`did` = d.`id`
-         WHERE 1 = 1 AND t.`valid` = 1 AND d.`valid` = 1
-         AND d.`id` IN
+        SELECT t.`id`,t.`start_time` AS 'startTime',t.`end_time` AS 'endTime',d.`date`,t.`remarks`,t.`total` FROM `time_record` t
+        LEFT JOIN `date_record` d ON t.`did` = d.`id`
+        WHERE 1 = 1 AND t.`valid` = 1
+        AND d.`id` IN
         <foreach collection="ids" item="item" separator="," close=")" open="(">
-             #{item}
+            #{item}
         </foreach>
 
-         ORDER BY d.`date`,t.`start_time`,t.`end_time`
+        ORDER BY d.`date`,t.`start_time`,t.`end_time`,t.`id`
     </select>
 
     <delete id="unSignUp">

@@ -54,6 +54,11 @@ public class InvigilatorServiceImpl implements InvigilatorService {
     }
 
     @Override
+    public int stop(Integer id) {
+        return dateRecordMapper.stop(id);
+    }
+
+    @Override
     public List<DateDto> conditionQuery(DateDto dto) {
         List<DateDto> dtoList = new ArrayList<>();
 

@@ -33,6 +33,9 @@ public class TimeRecord implements Serializable {
     //需求总人数
     private Integer total;
 
+    //备注
+    private String remarks;
+
     //有效性（0.无效 1.有效）
     private Integer valid;
 

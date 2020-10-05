@@ -73,33 +73,44 @@ public class ExcelServiceImpl implements ExcelService {
         int i = 1;
         for (StartTimeAndEndTime time : timeLists) {
             timeMap.put(time.getId().toString(), i);
-            row2.createCell(i++).setCellValue(formatTime(time.getStartTime()) + " - " + formatTime(time.getEndTime()));
+            String remarks = time.getRemarks()==null?"":"("+time.getRemarks()+")";
+            row2.createCell(i++).setCellValue(formatTime(time.getStartTime()) + " -- " + formatTime(time.getEndTime())+"("+time.getTotal()+"人)"+remarks);
         }
         List<UserHaveTime> users = userMapper.exportUser(dateId);
         int rows = 3;
+
         for (UserHaveTime userHaveTime : users){
+            boolean flag = true;
             HSSFRow row3 = sheet.createRow(rows);
-            row3.createCell(0).setCellValue(userHaveTime.getNickname());
+//            row3.createCell(0).setCellValue(userHaveTime.getNickname());
             String tid = userHaveTime.getTid();
             String[] split = tid.split(",");
             for (int j=0;j<split.length;j++){
                 String s = split[j];
                 Integer cel = timeMap.get(s);
+                if(cel==null && flag){//t t
+                    continue;
+                }else {
+                    flag = false;
+                    row3.createCell(0).setCellValue(userHaveTime.getNickname());
+                }
                 row3.createCell(cel).setCellValue("√");
             }
-            rows++;
+            if (!flag){
+                rows++;
+            }
         }
 
         return workbook;
     }
 
     private String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
         return sdf.format(date);
     }
 
     private String formatTime(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         return sdf.format(date);
     }
 }
