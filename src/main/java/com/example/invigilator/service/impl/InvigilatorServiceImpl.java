@@ -1,5 +1,6 @@
 package com.example.invigilator.service.impl;
 
+import com.example.invigilator.dto.DateDetails;
 import com.example.invigilator.dto.DateDto;
 import com.example.invigilator.dto.EnlistDto;
 import com.example.invigilator.dto.TimeDto;
@@ -51,6 +52,25 @@ public class InvigilatorServiceImpl implements InvigilatorService {
             dtoList.add(dateDto);
         }
         return dtoList;
+    }
+
+    //问题
+    @Override
+    public List<DateDetails> byId(Integer id) throws ParseException {
+        List<DateDetails> result = new ArrayList<>();
+        List<com.example.invigilator.entity.DateDetails> dateDetails = dateRecordMapper.DateDetails(id);
+        for (com.example.invigilator.entity.DateDetails detail : dateDetails) {
+            DateDetails date = new DateDetails();
+            String[] split = detail.getSe().split("\\$");
+            date.setStartTime(split[0]);
+            date.setEndTime(split[1]);
+            date.setRemarks(detail.getRemarks());
+            if (detail.getName() != null) {
+                date.setNames(detail.getName().split(","));
+            }
+            result.add(date);
+        }
+        return result;
     }
 
     @Override
@@ -159,7 +179,7 @@ public class InvigilatorServiceImpl implements InvigilatorService {
 
     @Override
     public int unSignUp(Integer uid, Integer tid) {
-        return timeRecordMapper.unSignUp(uid,tid);
+        return timeRecordMapper.unSignUp(uid, tid);
     }
 
     private Date updateTime(Date date, Date time) {
@@ -176,4 +196,5 @@ public class InvigilatorServiceImpl implements InvigilatorService {
         }
         return null;
     }
+
 }

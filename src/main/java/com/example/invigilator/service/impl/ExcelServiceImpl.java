@@ -73,7 +73,7 @@ public class ExcelServiceImpl implements ExcelService {
         int i = 1;
         for (StartTimeAndEndTime time : timeLists) {
             timeMap.put(time.getId().toString(), i);
-            String remarks = time.getRemarks()==null?"":"("+time.getRemarks()+")";
+            String remarks = (time.getRemarks()==null || time.getRemarks()=="")?"":"("+time.getRemarks()+")";
             row2.createCell(i++).setCellValue(formatTime(time.getStartTime()) + " -- " + formatTime(time.getEndTime())+"("+time.getTotal()+"人)"+remarks);
         }
         List<UserHaveTime> users = userMapper.exportUser(dateId);

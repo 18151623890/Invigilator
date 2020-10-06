@@ -1,6 +1,7 @@
 package com.example.invigilator.mapper;
 
 import com.example.invigilator.dto.DateDto;
+import com.example.invigilator.entity.DateDetails;
 import com.example.invigilator.entity.DateRecord;
 import com.example.invigilator.entity.DateTotal;
 import com.example.invigilator.entity.StartTimeAndEndTime;
@@ -33,4 +34,7 @@ public interface DateRecordMapper {
     int stop(@Param("id") Integer id);
 
     List<DateTotal> exportDate(@Param("ids")List<Integer> ids);
+
+    //详情
+    List<DateDetails> DateDetails(@Param("id") Integer id);
 }

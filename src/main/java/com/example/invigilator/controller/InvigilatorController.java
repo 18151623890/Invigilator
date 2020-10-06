@@ -1,5 +1,6 @@
 package com.example.invigilator.controller;
 
+import com.example.invigilator.dto.DateDetails;
 import com.example.invigilator.dto.DateDto;
 import com.example.invigilator.dto.EnlistDto;
 import com.example.invigilator.service.InvigilatorService;
@@ -64,6 +65,16 @@ public class InvigilatorController {
         }
     }
     //根据日期ID查询详细信息
+    @GetMapping(value = "/byId/{id}")
+    public Result byId(@PathVariable Integer id){
+        try {
+            List<DateDetails> details = service.byId(id);
+            return Result.success(details);
+        } catch (Exception e) {
+            return Result.failure("系统异常，请联系管理员");
+        }
+    }
+
 
     //根据时间ID查询已报名人员
 

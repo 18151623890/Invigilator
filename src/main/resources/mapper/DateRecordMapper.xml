@@ -72,4 +72,12 @@
         UPDATE `date_record` SET `valid` = 0  WHERE `id` =  #{id}
     </update>
 
+    <select id="DateDetails" parameterType="Integer" resultType="com.example.invigilator.entity.DateDetails">
+        SELECT CONCAT(t.`start_time`,'$',t.`end_time`) AS 'se',GROUP_CONCAT(u.`nickname` SEPARATOR ',') AS 'name',t.`remarks` FROM `time_record` t
+        LEFT JOIN `user_time` ut ON t.`id` = ut.`tid`
+        LEFT JOIN `user` u ON ut.`uid` = u.`id`
+        WHERE 1 = 1 AND t.`did` = #{id}
+        GROUP BY se
+    </select>
+
 </mapper>

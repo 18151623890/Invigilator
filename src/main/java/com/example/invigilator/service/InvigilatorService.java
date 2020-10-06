@@ -1,9 +1,11 @@
 package com.example.invigilator.service;
 
+import com.example.invigilator.dto.DateDetails;
 import com.example.invigilator.dto.DateDto;
 import com.example.invigilator.dto.EnlistDto;
 import com.example.invigilator.entity.StartTimeAndEndTime;
 
+import java.text.ParseException;
 import java.util.List;
 
 /**
@@ -14,6 +16,8 @@ import java.util.List;
 public interface InvigilatorService {
 
     List<DateDto> all();
+
+    List<DateDetails> byId(Integer id) throws ParseException;
 
     int stop(Integer id);
 
