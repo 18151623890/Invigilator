@@ -58,4 +58,8 @@
     <delete id="unSignUp">
         DELETE FROM `user_time` WHERE `uid` = #{uid} AND `tid` = #{tid}
     </delete>
+
+    <select id="queryNotJoin" parameterType="Integer" resultType="String">
+        SELECT `nickname`  FROM `user` WHERE id  NOT IN(SELECT `uid` FROM `user_time` WHERE `tid` = #{id}) AND valid = 1
+    </select>
 </mapper>

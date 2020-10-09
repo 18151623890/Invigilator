@@ -68,42 +68,68 @@ public class ExcelServiceImpl implements ExcelService {
                 start = end + 1;
             }
         }
+        //填写时间
         Map<String, Integer> timeMap = new HashMap();
         HSSFRow row2 = sheet.createRow(2);
         int i = 1;
         for (StartTimeAndEndTime time : timeLists) {
             timeMap.put(time.getId().toString(), i);
-            String remarks = (time.getRemarks()==null || time.getRemarks()=="")?"":"("+time.getRemarks()+")";
-            row2.createCell(i++).setCellValue(formatTime(time.getStartTime()) + " -- " + formatTime(time.getEndTime())+"("+time.getTotal()+"人)"+remarks);
+            String remarks = (time.getRemarks().isEmpty()) ? "" : "(" + time.getRemarks() + ")";
+            row2.createCell(i++).setCellValue(formatTime(time.getStartTime()) + " -- " + formatTime(time.getEndTime()) + "(" + time.getTotal() + "人)" + remarks);
+            queryNotJoin(workbook,time);
         }
         List<UserHaveTime> users = userMapper.exportUser(dateId);
         int rows = 3;
 
-        for (UserHaveTime userHaveTime : users){
+        for (UserHaveTime userHaveTime : users) {
             boolean flag = true;
             HSSFRow row3 = sheet.createRow(rows);
-//            row3.createCell(0).setCellValue(userHaveTime.getNickname());
+            row3.createCell(0).setCellValue(userHaveTime.getNickname());
+            //row3.createCell(0).setCellValue(userHaveTime.getNickname());
             String tid = userHaveTime.getTid();
-            String[] split = tid.split(",");
-            for (int j=0;j<split.length;j++){
+            String[] split = tid.split(",");//所有报名的时间
+            for (int j = 0; j < split.length; j++) {
                 String s = split[j];
                 Integer cel = timeMap.get(s);
-                if(cel==null && flag){//t t
+                if (cel == null) {//t t
                     continue;
-                }else {
+                } else {
                     flag = false;
-                    row3.createCell(0).setCellValue(userHaveTime.getNickname());
+                    row3.createCell(cel).setCellValue("√");
                 }
-                row3.createCell(cel).setCellValue("√");
             }
-            if (!flag){
+            if (!flag) {
                 rows++;
             }
         }
-
         return workbook;
     }
 
+    //查询时间内没有参加的所有人，并产生一张表
+    private void queryNotJoin(HSSFWorkbook workbook,StartTimeAndEndTime time){
+        String remarks = (time.getRemarks().isEmpty()) ? "" : "(" + time.getRemarks() + ")";
+        HSSFSheet sheet = workbook.createSheet(format(time.getStartTime()) + " -- " + formatTimeToC(time.getEndTime()) + "(" + time.getTotal() + "人)" + remarks);
+        HSSFCell cell = sheet.createRow(0).createCell(0);
+        cell.setCellValue(format(time.getStartTime()) + " -- " + formatTimeToC(time.getEndTime()) + "(" + time.getTotal() + "人)" + remarks);
+        Integer id = time.getId();
+        int i =1;
+        String[] names = timeRecordMapper.queryNotJoin(id);
+        for (String name: names) {
+            if (name.equals("管理员"))
+                continue;
+            sheet.createRow(i++).createCell(0).setCellValue(name);
+        }
+    }
+
+    private String format(Date date){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy年MM月dd日 HH时mm分");
+        return sdf.format(date);
+    }
+
+    private String formatTimeToC(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH时mm分");
+        return sdf.format(date);
+    }
     private String formatDate(Date date) {
         SimpleDateFormat sdf = new SimpleDateFormat("MM月dd日");
         return sdf.format(date);

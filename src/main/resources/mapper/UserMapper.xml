@@ -105,13 +105,24 @@
     <select id="exportUser" parameterType="list" resultType="com.example.invigilator.entity.UserHaveTime">
         SELECT u.`nickname`,GROUP_CONCAT(ut.`tid` ORDER BY ut.`tid` SEPARATOR ',') AS 'tid' FROM `user_time` ut
         LEFT JOIN `user` u ON u.`id` = ut.`uid`
+        LEFT JOIN (SELECT `id`,`did` FROM `time_record` WHERE `did` IN<foreach collection="ids" item="item" separator="," close=")" open="(">
+        #{item}
+    </foreach> AND `valid` = 1) a ON a.`id` = ut.`tid`
+        WHERE 1 = 1 AND u.`valid` = 1 AND a.`did` IN<foreach collection="ids" item="item" separator="," close=")" open="(">
+        #{item}
+    </foreach>
+        GROUP BY u.`id`
+
+
+        <!--SELECT u.`nickname`,GROUP_CONCAT(ut.`tid` ORDER BY ut.`tid` SEPARATOR ',') AS 'tid' FROM `user_time` ut
+        LEFT JOIN `user` u ON u.`id` = ut.`uid`
         LEFT JOIN (SELECT `id` FROM `time_record` WHERE `did` IN
         <foreach collection="ids" item="item" separator="," close=")" open="(">
             #{item}
         </foreach>
         AND `valid` = 1) a ON a.`id` = ut.`tid`
         WHERE 1 = 1 AND u.`valid` = 1
-        GROUP BY u.`id`
+        GROUP BY u.`id`-->
     </select>
 
     <select id="all" parameterType="com.example.invigilator.entity.User" resultType="com.example.invigilator.entity.User">
