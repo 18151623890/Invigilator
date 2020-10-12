@@ -102,7 +102,9 @@
         (#{uid},#{tid})
     </insert>
 
-    <select id="exportUser" parameterType="list" resultType="com.example.invigilator.entity.UserHaveTime">
+    <!--<select id="exportUser" parameterType="list" resultType="com.example.invigilator.entity.UserHaveTime">
+
+
         SELECT u.`nickname`,GROUP_CONCAT(ut.`tid` ORDER BY ut.`tid` SEPARATOR ',') AS 'tid' FROM `user_time` ut
         LEFT JOIN `user` u ON u.`id` = ut.`uid`
         LEFT JOIN (SELECT `id`,`did` FROM `time_record` WHERE `did` IN<foreach collection="ids" item="item" separator="," close=")" open="(">
@@ -112,28 +114,27 @@
         #{item}
     </foreach>
         GROUP BY u.`id`
-
-
-        <!--SELECT u.`nickname`,GROUP_CONCAT(ut.`tid` ORDER BY ut.`tid` SEPARATOR ',') AS 'tid' FROM `user_time` ut
-        LEFT JOIN `user` u ON u.`id` = ut.`uid`
-        LEFT JOIN (SELECT `id` FROM `time_record` WHERE `did` IN
-        <foreach collection="ids" item="item" separator="," close=")" open="(">
-            #{item}
-        </foreach>
-        AND `valid` = 1) a ON a.`id` = ut.`tid`
-        WHERE 1 = 1 AND u.`valid` = 1
-        GROUP BY u.`id`-->
+    </select>-->
+    <select id="exportUser" parameterType="list" resultType="com.example.invigilator.entity.NicknameTid">
+        SELECT u.`nickname`,a.`uid`,a.`tid` FROM `user` u
+        LEFT JOIN (SELECT `uid`,`tid` FROM `user_time` WHERE `tid` IN ( SELECT id FROM `time_record` WHERE `did` IN<foreach
+            collection="ids" item="item" separator="," close=")" open="(">
+        #{item}
+    </foreach> ) ) a ON a.`uid` = u.`id`
+        WHERE a.`uid` = u.`id`
+        ORDER BY a.`uid`
     </select>
 
-    <select id="all" parameterType="com.example.invigilator.entity.User" resultType="com.example.invigilator.entity.User">
-        SELECT 	`id` AS 'userId',`username` AS  'userName',`nickname`,`valid` FROM `user` WHERE 1 = 1
-            <if test="nickname != null and nickname != ''">
-               AND `nickname` LIKE CONCAT('%',#{nickname},'%')
-            </if>
+    <select id="all" parameterType="com.example.invigilator.entity.User"
+            resultType="com.example.invigilator.entity.User">
+        SELECT `id` AS 'userId',`username` AS 'userName',`nickname`,`valid` FROM `user` WHERE 1 = 1
+        <if test="nickname != null and nickname != ''">
+            AND `nickname` LIKE CONCAT('%',#{nickname},'%')
+        </if>
         <if test="userName != null and userName != ''">
             AND `username` LIKE CONCAT('%',#{userName},'%')
         </if>
-         ORDER BY `id`
+        ORDER BY `id`
     </select>
 
     <select id="byId" parameterType="Integer" resultType="com.example.invigilator.entity.User">

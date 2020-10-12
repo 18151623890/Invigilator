@@ -1,6 +1,7 @@
 package com.example.invigilator.service.impl;
 
 import com.example.invigilator.entity.DateTotal;
+import com.example.invigilator.entity.NicknameTid;
 import com.example.invigilator.entity.StartTimeAndEndTime;
 import com.example.invigilator.entity.UserHaveTime;
 import com.example.invigilator.mapper.DateRecordMapper;
@@ -18,8 +19,12 @@ import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * @author zwz
@@ -78,8 +83,30 @@ public class ExcelServiceImpl implements ExcelService {
             row2.createCell(i++).setCellValue(formatTime(time.getStartTime()) + " -- " + formatTime(time.getEndTime()) + "(" + time.getTotal() + "人)" + remarks);
             queryNotJoin(workbook,time);
         }
-        List<UserHaveTime> users = userMapper.exportUser(dateId);
+
         int rows = 3;
+
+        List<UserHaveTime> users = new LinkedList<>();
+//        List<UserHaveTime> users = userMapper.exportUser(dateId);
+        List<NicknameTid> userTid = userMapper.exportUser(dateId);
+        Set<String> setNickname = new HashSet<>();
+        for (NicknameTid nicknameTid : userTid){
+            setNickname.add(nicknameTid.getNickname());
+        }
+
+
+        Iterator<String> iterator = setNickname.iterator();
+        while (iterator.hasNext()){
+            String nickname = iterator.next();
+            UserHaveTime userHaveTime = new UserHaveTime();
+            userHaveTime.setNickname(nickname);
+            for (NicknameTid nicknameTid : userTid){
+                if (nicknameTid.getNickname().equals(nickname))
+                    userHaveTime.addTid(nicknameTid.getTid());
+            }
+            users.add(userHaveTime);
+        }
+
 
         for (UserHaveTime userHaveTime : users) {
             boolean flag = true;

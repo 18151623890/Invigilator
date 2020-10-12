@@ -14,4 +14,8 @@ public class UserHaveTime {
 
     private String tid;
 
+    public void addTid(String id){
+        this.tid = id+ "," + this.tid;
+    }
+
 }

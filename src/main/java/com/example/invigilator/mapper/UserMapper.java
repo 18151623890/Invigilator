@@ -1,5 +1,6 @@
 package com.example.invigilator.mapper;
 
+import com.example.invigilator.entity.NicknameTid;
 import com.example.invigilator.entity.StartTimeAndEndTime;
 import com.example.invigilator.entity.User;
 import com.example.invigilator.entity.UserHaveTime;
@@ -30,7 +31,8 @@ public interface UserMapper {
     int addTime(@Param("uid") Integer uid,@Param("tid") Integer tid);
 
     //已报时间
-    List<UserHaveTime> exportUser(@Param("ids")List<Integer> ids);
+//    List<UserHaveTime> exportUser(@Param("ids")List<Integer> ids);
+    List<NicknameTid> exportUser(@Param("ids")List<Integer> ids);
 
     //查询所有记录--条件：根据名字（可选）
     List<User> all(User user);
